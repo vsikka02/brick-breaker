@@ -8,7 +8,9 @@
 namespace brickbreaker{
 
 namespace visualizer {
- BrickBreakerApp::BrickBreakerApp() {
+ BrickBreakerApp::BrickBreakerApp() : game_environment_(
+          "/Users/vanshsikka/Documents/CS126/Cinder/my_projects/"
+          "final-project-vsikka2/include/datasets/level_one.json") {
    ci::app::setWindowSize((int) kWindowSize, (int) kWindowSize);
  }
  void BrickBreakerApp::draw() {
