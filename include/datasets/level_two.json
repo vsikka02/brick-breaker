@@ -1,0 +1,112 @@
+{
+  "bricks": [
+    {
+      "position": {"x": 112.5, "y":  100.0},
+      "life_span": 2,
+      "width": 50,
+      "height": 30
+    },
+    {
+      "position": {"x": 217.5, "y":  132.0},
+      "life_span": 2,
+      "width": 50,
+      "height": 30
+    },
+    {
+      "position": {"x": 322.5, "y":  164.0},
+      "life_span": 2,
+      "width": 50,
+      "height": 30
+    },
+    {
+      "position": {"x": 217.5, "y":  196.0},
+      "life_span": 2,
+      "width": 50,
+      "height": 30
+    },
+    {
+      "position": {"x": 112.5, "y":  228.0},
+      "life_span": 2,
+      "width": 50,
+      "height": 30
+    },
+    {
+      "position": {"x": 112.5, "y":  164.0},
+      "life_span": 2,
+      "width": 50,
+      "height": 30
+    },
+    {
+      "position": {"x": 427.5, "y":  164.0},
+      "life_span": 2,
+      "width": 50,
+      "height": 30
+    },
+    {
+      "position": {"x": 532.5, "y":  132.0},
+      "life_span": 2,
+      "width": 50,
+      "height": 30
+    },
+    {
+      "position": {"x": 532.5 , "y": 196.0},
+      "life_span": 2,
+      "width": 50,
+      "height": 30
+    },
+    {
+      "position": {"x": 637.5, "y":  100.0},
+      "life_span": 2,
+      "width": 50,
+      "height": 30
+    },
+    {
+      "position": {"x": 637.5 , "y": 228.0},
+      "life_span": 2,
+      "width": 50,
+      "height": 30
+    },
+    {
+      "position": {"x": 637.5 , "y": 164.0},
+      "life_span": 2,
+      "width": 50,
+      "height": 30
+    },
+    {
+      "position": {"x": 112.5 , "y": 292.0},
+      "life_span": 3,
+      "width": 50,
+      "height": 30
+    },
+    {
+      "position": {"x": 217.5 , "y": 292.0},
+      "life_span": 3,
+      "width": 50,
+      "height": 30
+    },
+    {
+      "position": {"x": 322.5 , "y": 292.0},
+      "life_span": 3,
+      "width": 50,
+      "height": 30
+    },
+    {
+      "position": {"x": 427.5 , "y": 292.0},
+      "life_span": 3,
+      "width": 50,
+      "height": 30
+    },
+    {
+      "position": {"x": 532.5 , "y": 292.0},
+      "life_span": 3,
+      "width": 50,
+      "height": 30
+    },
+    {
+      "position": {"x": 637.5 , "y": 292.0},
+      "life_span": 3,
+      "width": 50,
+      "height": 30
+    }
+  ]
+}
