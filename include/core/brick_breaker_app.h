@@ -16,6 +16,7 @@ namespace brickbreaker{
 
 class BrickBreakerApp : public ci::app::App {
  public:
+  // Constructors.
   BrickBreakerApp();
 
   // Override the Draw Function so that the Cinder App can rerun this every time
