@@ -2,26 +2,22 @@
 // Created by Vansh Sikka on 4/17/21.
 //
 
-#include <visualizer/brick_breaker_app.h>
-#include <visualizer/game_environment.h>
-#include<unistd.h>
+#include <core/brick_breaker_app.h>
+#include <core/game_environment.h>
+#include <unistd.h>
 
 namespace brickbreaker{
 
-namespace visualizer {
 BrickBreakerApp::BrickBreakerApp()
-    : game_environment_(
-          "/Users/vanshsikka/Documents/CS126/Cinder/my_projects/"
-          "final-project-vsikka2/include/datasets/0.json") {
+    : game_environment_("../../../../../../include/datasets/0.json") {
   current_level_ = 0;
-  player_lives_ = kMaxPlayerLives;
   ci::app::setWindowSize((int)kWindowSize, (int)kWindowSize);
 }
 void BrickBreakerApp::draw() {
   ci::Color8u background_color(30, 144, 255);
   ci::gl::clear(background_color);
   game_environment_.Draw();
-  ci::gl::drawStringCentered("Lives: " + std::to_string(player_lives_),
+  ci::gl::drawStringCentered("Lives: " + std::to_string(game_environment_.player_lives()),
                              glm::vec2(650, 25),
                              ci::Color("white"),
                              ci::Font("Courier New", 20));
@@ -35,11 +31,12 @@ void BrickBreakerApp::draw() {
                                glm::vec2(375, 375),
                                ci::Color("green"),
                                ci::Font("Courier New", 30));
-  } else if (player_lives_ <= 0) {
+  } else if (game_environment_.player_lives() <= 0) {
     ci::gl::drawStringCentered("LOSER",
                                glm::vec2(375, 375),
                                ci::Color("red"),
                                ci::Font("Courier New", 30));
+    game_environment_.ball().set_velocity(0,0);
   } else if (!game_environment_.ball().is_launched()) {
     ci::gl::drawStringCentered("Hit Space to Start Brick Breaker",
                                glm::vec2(375, 375),
@@ -79,21 +76,12 @@ void BrickBreakerApp::update() {
     if (current_level_ <= kHighestLevel) {
       GameEnvironment basic = GameEnvironment();
       std::ifstream json_file(
-          "/Users/vanshsikka/Documents/CS126/Cinder/my_projects/final-project-vsikka2/include/datasets/" +
+          "../../../../../../include/datasets/" +
           std::to_string(current_level_) + ".json");
       json_file >> game_environment_;
     }
   } else {
-    if(game_environment_.ball().is_launched() && game_environment_.ball().velocity() == glm::vec2(0,0)){
-      player_lives_--;
-      game_environment_.ball().Reset();
-      game_environment_.paddle().Reset();
-    } else if (player_lives_ <= 0) {
-
-    } else {
-      game_environment_.Update();
-    }
+    game_environment_.Update();
   }
-}
 }
 }

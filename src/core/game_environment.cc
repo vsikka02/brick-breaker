@@ -2,10 +2,11 @@
 // Created by Vansh Sikka on 4/18/21.
 //
 
-#include "visualizer/game_environment.h"
+#include "core/game_environment.h"
 
+#include <core/brick_breaker_app.h>
 #include <core/paddle.h>
-#include <visualizer/brick_breaker_app.h>
+
 #include <fstream>
 #include <nlohmann/json.hpp>
 
@@ -13,10 +14,10 @@ using json = nlohmann::json;
 
 namespace brickbreaker{
 
-namespace visualizer {
 GameEnvironment::GameEnvironment() {}
 
 GameEnvironment::GameEnvironment(std::string input_file) {
+  player_lives_ = kMaxPlayerLives;
   std::fstream input (input_file);
   json j = json::parse(input);
 
@@ -29,6 +30,7 @@ GameEnvironment::GameEnvironment(std::string input_file) {
     brick.set_height(element["height"].get<size_t>());
     bricks_.push_back(brick);
   }
+
   level_complete_ = j["level_complete"];
 
   ball_.set_radius(j["ball"]["radius"]);
@@ -56,7 +58,7 @@ void GameEnvironment::Update() {
   ball_.PaddleCollision(paddle_);
   ball_.BrickCollision(bricks_);
 
-  //Check if Level Is Complete
+  // Check if Level Is Complete.
   bool boolean = true;
   for (brickbreaker::Brick& brick : bricks_) {
     if (brick.life_span() > 0) {
@@ -65,6 +67,13 @@ void GameEnvironment::Update() {
     }
   }
   level_complete_ = boolean;
+
+  // Check if player died.
+  if(ball_.is_launched() && ball_.velocity() == glm::vec2(0,0) && player_lives_ > 0){
+    player_lives_--;
+    ball_.Reset();
+    paddle_.Reset();
+  }
 }
 
 std::istream& operator>>(std::istream& is,
@@ -106,6 +115,8 @@ bool GameEnvironment::level_complete() {
 std::vector<Brick> GameEnvironment::bricks() {
   return bricks_;
 }
-}
 
+int GameEnvironment::player_lives() {
+  return player_lives_;
+}
 }

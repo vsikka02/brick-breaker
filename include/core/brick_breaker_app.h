@@ -10,11 +10,9 @@
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
 #include "game_environment.h"
-#include "visualizer/game_environment.h"
 
 namespace brickbreaker{
 
-namespace visualizer {
 
 class BrickBreakerApp : public ci::app::App {
  public:
@@ -38,15 +36,12 @@ class BrickBreakerApp : public ci::app::App {
   void update() override;
 
  private:
-  visualizer::GameEnvironment game_environment_;
+  brickbreaker::GameEnvironment game_environment_;
   size_t current_level_;
-  int player_lives_;
 
   // Constants for the BrickBreaker app.
   const double kWindowSize = 750;
   const int kHighestLevel = 3;
-  const int kMaxPlayerLives = 3;
 };
-}
 
 }
