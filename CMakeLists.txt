@@ -53,8 +53,8 @@ include("${CINDER_PATH}/proj/cmake/modules/cinderMakeApp.cmake")
 list(APPEND CORE_SOURCE_FILES)
 
 list(APPEND SOURCE_FILES ${CORE_SOURCE_FILES}
-        src/visualizer/brick_breaker_app.cc
-        src/visualizer/game_environment.cc
+        src/core/brick_breaker_app.cc
+        src/core/game_environment.cc
         src/core/ball.cc
         src/core/paddle.cc
         src/core/brick.cc)
@@ -62,7 +62,8 @@ list(APPEND SOURCE_FILES ${CORE_SOURCE_FILES}
 list(APPEND TEST_FILES
         tests/paddle_test.cc
         tests/ball_test.cc
-        tests/brick_test.cc)
+        tests/brick_test.cc
+        tests/game_environment_test.cc)
 
 ci_make_app(
         APP_NAME brick-breaker
