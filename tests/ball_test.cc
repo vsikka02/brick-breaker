@@ -175,7 +175,9 @@ TEST_CASE("Ball and Paddle Collision") {
     ball.set_is_launched(true);
     vec2 old_velocity = ball.velocity();
     ball.PaddleCollision(paddle);
-    vec2 new_velocity = old_velocity - (2.0f * glm::dot(vec2(sin(-0.314159), cos(-0.314159)), old_velocity) * vec2(sin(-0.314159), cos(-0.314159)));
+    vec2 new_velocity =
+        old_velocity - (2.0f * glm::dot(vec2(sin(-0.314159), cos(-0.314159)), old_velocity)
+         * vec2(sin(-0.314159), cos(-0.314159)));
     REQUIRE(ball.velocity().x == Approx(new_velocity.x));
     REQUIRE(ball.velocity().y == Approx(new_velocity.y));
   }
@@ -185,7 +187,9 @@ TEST_CASE("Ball and Paddle Collision") {
     ball.set_is_launched(true);
     vec2 old_velocity = ball.velocity();
     ball.PaddleCollision(paddle);
-    vec2 new_velocity = old_velocity - (2.0f * glm::dot(vec2(sin(0.314159), cos(0.314159)), old_velocity) * vec2(sin(0.314159), cos(0.314159)));
+    vec2 new_velocity =
+        old_velocity - (2.0f * glm::dot(vec2(sin(0.314159), cos(0.314159)), old_velocity)
+         * vec2(sin(0.314159), cos(0.314159)));
     REQUIRE(ball.velocity().x == Approx(new_velocity.x));
     REQUIRE(ball.velocity().y == Approx(new_velocity.y));
   }
@@ -195,7 +199,9 @@ TEST_CASE("Ball and Paddle Collision") {
     ball.set_is_launched(true);
     vec2 old_velocity = ball.velocity();
     ball.PaddleCollision(paddle);
-    vec2 new_velocity = old_velocity - (2.0f * glm::dot(vec2(sin(0.785398), cos(0.785398)), old_velocity) * vec2(sin(0.785398), cos(0.785398)));
+    vec2 new_velocity =
+        old_velocity - (2.0f * glm::dot(vec2(sin(0.785398), cos(0.785398)), old_velocity)
+        * vec2(sin(0.785398), cos(0.785398)));
     REQUIRE(ball.velocity().x == Approx(new_velocity.x));
     REQUIRE(ball.velocity().y == -Approx(new_velocity.y));
   }
@@ -205,8 +211,17 @@ TEST_CASE("Ball and Paddle Collision") {
     ball.set_is_launched(true);
     vec2 old_velocity = ball.velocity();
     ball.PaddleCollision(paddle);
-    vec2 new_velocity = old_velocity - (2.0f * glm::dot(vec2(sin(-0.785398), cos(-0.785398)), old_velocity) * vec2(sin(-0.785398), cos(-0.785398)));
+    vec2 new_velocity =
+        old_velocity - (2.0f * glm::dot(vec2(sin(-0.785398), cos(-0.785398)), old_velocity)
+         * vec2(sin(-0.785398), cos(-0.785398)));
     REQUIRE(ball.velocity().x == Approx(new_velocity.x));
     REQUIRE(ball.velocity().y == Approx(new_velocity.y));
   }
+}
+
+TEST_CASE("Ball Reset") {
+  brickbreaker::Ball ball = brickbreaker::Ball(vec2(425, 680), vec2(-1, 1), 1);
+  ball.set_is_launched(true);
+  ball.Reset();
+  REQUIRE_FALSE(ball.is_launched());
 }

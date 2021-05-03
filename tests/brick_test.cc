@@ -51,4 +51,13 @@ TEST_CASE("Brick Collision") {
     ball.BrickCollision(bricks);
     REQUIRE(bricks[0].life_span() == 2);
   }
+  SECTION("Brick on Final Collision") {
+    bricks[0].set_life_span(1);
+    brickbreaker::Ball ball = brickbreaker::Ball(vec2(120, 221), vec2(-1, -1), 1);
+    ball.BrickCollision(bricks);
+    REQUIRE(bricks[0].life_span() == 0);
+    REQUIRE(bricks[0].position() == glm::vec2(0,0));
+    REQUIRE(bricks[0].height() == 0);
+    REQUIRE(bricks[0].width() == 0);
+  }
 }
