@@ -4,49 +4,96 @@
 
 #include <visualizer/brick_breaker_app.h>
 #include <visualizer/game_environment.h>
+#include<unistd.h>
 
 namespace brickbreaker{
 
 namespace visualizer {
- BrickBreakerApp::BrickBreakerApp() : game_environment_(
+BrickBreakerApp::BrickBreakerApp()
+    : game_environment_(
           "/Users/vanshsikka/Documents/CS126/Cinder/my_projects/"
-          "final-project-vsikka2/include/datasets/level_one.json") {
-   ci::app::setWindowSize((int) kWindowSize, (int) kWindowSize);
- }
- void BrickBreakerApp::draw() {
-   ci::Color8u background_color(30,144,255);  // light yellow
-   ci::gl::clear(background_color);
-   game_environment_.Draw();
-   game_environment_.paddle();
- }
- void BrickBreakerApp::keyDown(ci::app::KeyEvent event) {
-   switch (event.getCode()) {
-     case ci::app::KeyEvent::KEY_RIGHT:
-       game_environment_.paddle().KeyPress(Paddle::Direction::MOVE_RIGHT, true);
-       break;
-     case ci::app::KeyEvent::KEY_LEFT:
-       game_environment_.paddle().KeyPress(Paddle::Direction::MOVE_LEFT, true);
-       break;
-     case ci::app::KeyEvent::KEY_SPACE:
-       game_environment_.ball().LaunchBall();
-   }
- }
-
- void BrickBreakerApp::keyUp(ci::app::KeyEvent event) {
-   switch (event.getCode()) {
-     case ci::app::KeyEvent::KEY_RIGHT:
-       game_environment_.paddle().KeyPress(Paddle::Direction::MOVE_RIGHT,
-                                           false);
-       break;
-     case ci::app::KeyEvent::KEY_LEFT:
-       game_environment_.paddle().KeyPress(Paddle::Direction::MOVE_LEFT, false);
-       break;
-   }
- }
-
- void BrickBreakerApp::update() {
-   game_environment_.Update();
- }
+          "final-project-vsikka2/include/datasets/0.json") {
+  current_level_ = 0;
+  player_lives_ = kMaxPlayerLives;
+  ci::app::setWindowSize((int)kWindowSize, (int)kWindowSize);
+}
+void BrickBreakerApp::draw() {
+  ci::Color8u background_color(30, 144, 255);
+  ci::gl::clear(background_color);
+  game_environment_.Draw();
+  ci::gl::drawStringCentered("Lives: " + std::to_string(player_lives_),
+                             glm::vec2(650, 25),
+                             ci::Color("white"),
+                             ci::Font("Courier New", 20));
+  if (game_environment_.level_complete() && current_level_  <= 3) {
+    ci::gl::drawStringCentered("LEVEL " + std::to_string(current_level_) + " COMPLETE",
+                               glm::vec2(375, 375),
+                               ci::Color("black"),
+                               ci::Font("Courier New", 30));
+  } else if (current_level_ > kHighestLevel) {
+    ci::gl::drawStringCentered("WINNER",
+                               glm::vec2(375, 375),
+                               ci::Color("green"),
+                               ci::Font("Courier New", 30));
+  } else if (player_lives_ <= 0) {
+    ci::gl::drawStringCentered("LOSER",
+                               glm::vec2(375, 375),
+                               ci::Color("red"),
+                               ci::Font("Courier New", 30));
+  } else if (!game_environment_.ball().is_launched()) {
+    ci::gl::drawStringCentered("Hit Space to Start Brick Breaker",
+                               glm::vec2(375, 375),
+                               ci::Color("black"),
+                               ci::Font("Courier New", 30));
+  }
 }
 
+void BrickBreakerApp::keyDown(ci::app::KeyEvent event) {
+  switch (event.getCode()) {
+    case ci::app::KeyEvent::KEY_RIGHT:
+      game_environment_.paddle().KeyPress(Paddle::Direction::RIGHT, true);
+      break;
+    case ci::app::KeyEvent::KEY_LEFT:
+      game_environment_.paddle().KeyPress(Paddle::Direction::LEFT, true);
+      break;
+    case ci::app::KeyEvent::KEY_SPACE:
+      game_environment_.ball().Launch();
+  }
+}
+
+void BrickBreakerApp::keyUp(ci::app::KeyEvent event) {
+  switch (event.getCode()) {
+    case ci::app::KeyEvent::KEY_RIGHT:
+      game_environment_.paddle().KeyPress(Paddle::Direction::RIGHT, false);
+      break;
+    case ci::app::KeyEvent::KEY_LEFT:
+      game_environment_.paddle().KeyPress(Paddle::Direction::LEFT, false);
+      break;
+  }
+}
+
+void BrickBreakerApp::update() {
+  if (game_environment_.level_complete()) {
+    usleep(3000000);
+    current_level_++;
+    if (current_level_ <= kHighestLevel) {
+      GameEnvironment basic = GameEnvironment();
+      std::ifstream json_file(
+          "/Users/vanshsikka/Documents/CS126/Cinder/my_projects/final-project-vsikka2/include/datasets/" +
+          std::to_string(current_level_) + ".json");
+      json_file >> game_environment_;
+    }
+  } else {
+    if(game_environment_.ball().is_launched() && game_environment_.ball().velocity() == glm::vec2(0,0)){
+      player_lives_--;
+      game_environment_.ball().Reset();
+      game_environment_.paddle().Reset();
+    } else if (player_lives_ <= 0) {
+
+    } else {
+      game_environment_.Update();
+    }
+  }
+}
+}
 }
