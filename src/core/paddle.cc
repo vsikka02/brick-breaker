@@ -4,15 +4,11 @@
 
 #include "core/paddle.h"
 
-#include <visualizer/brick_breaker_app.h>
+#include <core/brick_breaker_app.h>
 
 namespace brickbreaker {
 
-Paddle::Paddle() {
-  int paddle_center = ((kStartingPointOfPaddle - kPaddleRadius) +
-                       (kStartingPointOfPaddle + kPaddleRadius))/2;
-  position_ = glm::vec2(paddle_center, 680);
-}
+Paddle::Paddle() {}
 
 void Paddle::Draw() const {
   ci::gl::color(ci::Color("black"));
@@ -20,23 +16,36 @@ void Paddle::Draw() const {
                                   glm::vec2(position_.x + kPaddleRadius,690)), 5);
 }
 
-void Paddle::KeyPress(Direction direction, bool boolean) {
+void Paddle::KeyPress(Direction direction, bool key_pressed) {
   bool out_bounds_left = position_.x - kPaddleRadius <= 50;
   bool out_bounds_right = position_.x + kPaddleRadius >= 700;
 
-  if ((direction == MOVE_LEFT && boolean == true)) {
+  if ((direction == LEFT && key_pressed)) {
     if (!out_bounds_left) {
-      position_.x -= 10;
+      position_.x -= 11;
     }
-  } else if ((direction == MOVE_RIGHT && boolean == true)) {
+  } else if ((direction == RIGHT && key_pressed)) {
     if (!out_bounds_right) {
-      position_.x += 10;
+      position_.x += 11;
     }
   }
 }
 
+void Paddle::Reset() {
+  position_ = glm::vec2(375, 680);
+}
+
 glm::vec2& Paddle::position() {
   return position_;
+}
+
+float Paddle::radius() {
+  return kPaddleRadius;
+}
+
+void Paddle::set_position(float x, float y) {
+  position_.x = x;
+  position_.y = y;
 }
 
 }

@@ -27,3 +27,10 @@ TEST_CASE("Paddle Movement") {
     REQUIRE(paddle.position() == glm::vec2(375, 680));
   }
 }
+
+TEST_CASE("Reset Paddle") {
+  brickbreaker::Paddle paddle = brickbreaker::Paddle();
+  paddle.set_position(410, 680);
+  paddle.Reset();
+  REQUIRE(paddle.position() == glm::vec2(375, 680));
+}
