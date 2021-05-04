@@ -98,7 +98,11 @@ void Ball::BrickCollision(std::vector<brickbreaker::Brick>& bricks) {
 
 void Ball::Reset() {
   is_launched_ = false;
-  velocity_ = glm::vec2(2,-2);
+
+  std::srand(std::time(nullptr));
+  float x_velocity = rand() % 4 - 2;
+  float y_velocity = -(rand() % 3 + 1);
+  velocity_ = glm::vec2(x_velocity, y_velocity);
 }
 
 glm::vec2& Ball::position() {
