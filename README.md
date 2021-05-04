@@ -4,6 +4,12 @@ This is a video game that is inspired by the BlackBerry game Brick Breaker. I wr
 ###Instructions
 The game gives the user control of the paddle which is used to reflect the ball towards a large collection of bricks and destroying all of them in order to win complete the game.
 
+| Key     | Action    |
+| :------------- | :----------: |
+|  Right Arrow Key | Moves Paddle to the Right.   | 
+| Left Arrow Key   | Moves Paddle to the Left. | 
+| Space Bar | Launches the Ball |
+
 ####Bricks
 * Red Bricks: This is the strongest Brick and takes three hits to destroy the brick.
 * Blue Bricks: This is the middle level Brick and it takes two hits to destroy this brick. 
