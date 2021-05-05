@@ -1,4 +1,4 @@
-//
+//json.hpp
 // Created by Vansh Sikka on 4/18/21.
 //
 
@@ -6,6 +6,7 @@
 #include <core/paddle.h>
 #include <core/ball.h>
 #include <core/brick.h>
+#include <vector>
 
 namespace brickbreaker {
 
@@ -16,15 +17,17 @@ class GameEnvironment {
   const glm::vec2 kGameEnvironmentUpperBounds = glm::vec2(700,700);
 
   GameEnvironment();
+  GameEnvironment(std::string file_input);
   void Draw() const;
   Paddle& paddle();
   Ball& ball();
   void Update();
 
+
  private:
   Paddle paddle_;
   Ball ball_;
-  brickbreaker::Brick brick_;
+  std::vector<brickbreaker::Brick> bricks_;
 };
 
 }

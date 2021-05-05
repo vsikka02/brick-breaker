@@ -12,7 +12,7 @@ namespace brickbreaker {
 
 class Paddle {
  public:
-  int const kPaddleRadius = 50;
+  float const kPaddleRadius = 50;
   int const kStartingPointOfPaddle = 375;
 
   enum Direction {

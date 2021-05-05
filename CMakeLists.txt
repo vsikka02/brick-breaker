@@ -44,6 +44,7 @@ if (NOT catch2_POPULATED)
     target_include_directories(catch2 INTERFACE ${catch2_SOURCE_DIR}/single_include)
 endif ()
 
+
 get_filename_component(CINDER_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../" ABSOLUTE)
 get_filename_component(APP_PATH "${CMAKE_CURRENT_SOURCE_DIR}/" ABSOLUTE)
 
@@ -59,7 +60,9 @@ list(APPEND SOURCE_FILES ${CORE_SOURCE_FILES}
         src/core/brick.cc)
 
 list(APPEND TEST_FILES
-        tests/paddle_test.cc)
+        tests/paddle_test.cc
+        tests/ball_test.cc
+        tests/brick_test.cc)
 
 ci_make_app(
         APP_NAME brick-breaker
