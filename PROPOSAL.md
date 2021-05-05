@@ -20,9 +20,9 @@ this final project, I will decide to split this project
 up into 3 different milestones.
 
 1. Week 1:
-    1. ASDW Key Strokes Working
+    1. Directional Key Strokes Working
     1. Ball Bounce Around In Container
-    1. Bounce of Bar.
+    1. Bounce off Bar.
 1. Week 2:
     1. Add Bricks and Obstacles into game.
     
