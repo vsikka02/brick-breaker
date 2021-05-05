@@ -1,0 +1,19 @@
+{
+  "level_complete" : false,
+  "ball": {
+    "velocity": {"x": -2 ,"y": -3},
+    "is_launched": false,
+    "radius": 10
+  },
+  "paddle": {
+    "position": {"x": 375,"y": 680}
+  },
+  "bricks": [
+    {
+      "position": { "x": 112.5, "y": 100.0},
+      "life_span": 3,
+      "width": 50,
+      "height": 30
+    }
+  ]
+}

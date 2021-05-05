@@ -12,21 +12,37 @@ namespace brickbreaker {
 
 class Paddle {
  public:
-  float const kPaddleRadius = 50;
-  int const kStartingPointOfPaddle = 375;
-
+  //Enum to decipher which direction Key is pressed.
   enum Direction {
-    MOVE_LEFT,
-    MOVE_RIGHT,
+    LEFT,
+    RIGHT,
   };
 
+  // Constructors.
   Paddle();
+
+  // The Draw Function Draws the current state of the Paddle.
   void Draw() const;
-  void KeyPress(enum Direction direction, bool boolean);
+
+  // This changes the position of the paddle based off of the Direction that is
+  // passed and the boolean of whether the Key is Pressed.
+  void KeyPress(enum Direction direction, bool key_pressed);
+
+  // Used to Reset the Paddle in case the player loses a life.
+  void Reset();
+
+  // Getters.
   glm::vec2& position();
+  float radius();
+
+  // Setters.
+  void set_position(float x, float y);
 
  private:
   glm::vec2 position_;
+
+  //Constants for the Paddle.
+  const float kPaddleRadius = 50;
 };
 
 }

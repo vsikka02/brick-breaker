@@ -1,9 +1,9 @@
 //
 // Created by Vansh Sikka on 4/17/21.
 //
-#include <visualizer/brick_breaker_app.h>
+#include <core/brick_breaker_app.h>
 
-using brickbreaker::visualizer::BrickBreakerApp;
+using brickbreaker::BrickBreakerApp;
 
 void prepareSettings(BrickBreakerApp::Settings* settings) {
   settings->setResizable(false);

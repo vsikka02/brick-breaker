@@ -3,17 +3,14 @@
 //
 
 #include "core/ball.h"
-#include <visualizer/brick_breaker_app.h>
+
+#include <core/brick_breaker_app.h>
 #include <math.h>
 
 namespace brickbreaker {
 
-Ball::Ball(const glm::vec2& position, const glm::vec2& velocity, const float radius) {
-  position_ = position;
-  velocity_ = velocity;
-  radius_ = radius;
-  is_launched = false;
-}
+Ball::Ball(const glm::vec2& position, const glm::vec2& velocity, const float radius):
+position_(position), velocity_(velocity), radius_(radius), is_launched_(false){}
 
 void Ball::Draw() const {
   ci::gl::color(ci::Color("grey"));
@@ -21,15 +18,15 @@ void Ball::Draw() const {
 }
 
 void Ball::UpdatePosition(brickbreaker::Paddle& paddle) {
-  if (is_launched) {
+  if (is_launched_) {
     position_ = position_ + velocity_;
-  } else if (!is_launched) {
-    position_ = glm::vec2(paddle.position().x, paddle.position().y - kBallRadius);
+  } else if (!is_launched_) {
+    position_ = glm::vec2(paddle.position().x, paddle.position().y - radius_);
   }
 }
 
-void Ball::LaunchBall() {
-  is_launched = true;
+void Ball::Launch() {
+  is_launched_ = true;
 }
 
 void Ball::WallCollision(glm::vec2& in_bounds_1, glm::vec2& in_bounds_2) {
@@ -42,24 +39,24 @@ void Ball::WallCollision(glm::vec2& in_bounds_1, glm::vec2& in_bounds_2) {
     velocity_ = glm::vec2(-velocity_.x, velocity_.y);
   }
 
-  if (position_.y + radius_ >= in_bounds_2.y) {
-    velocity_ = glm::vec2 (0,0);
+  if (position_.y - radius_ >= in_bounds_2.y) {
+    velocity_ = glm::vec2(0,0);
   }
 }
 
 void Ball::PaddleCollision(brickbreaker::Paddle& paddle) {
-  if (is_launched) {
-    if (paddle.position().x + paddle.kPaddleRadius >= position_.x &&
-        paddle.position().x - paddle.kPaddleRadius <= position_.x ) {
-      if (position_.y + kBallRadius >= paddle.position().y && position_.y - kBallRadius <= paddle.position().y) {
+  if (is_launched_) {
+    if (paddle.position().x + paddle.radius() >= position_.x &&
+        paddle.position().x - paddle.radius() <= position_.x ) {
+      if (position_.y + radius_ >= paddle.position().y && position_.y - radius_ <= paddle.position().y) {
         float location_on_paddle = paddle.position().x - position_.x;
-        std::cout<<location_on_paddle<<std::endl;
+        float angle = (location_on_paddle * (45.0f/(paddle.radius())))*(M_PI/180.0f);
+        glm::vec2 new_velocity = glm::reflect(velocity_,glm::vec2(sin(angle), cos(angle)));
 
-        float angle = (location_on_paddle * (45.0f/(paddle.kPaddleRadius))) * (M_PI/180.0f);
-        std::cout<<angle<<std::endl;
-        std::cout<<velocity_<<std::endl;
-        velocity_ = glm::reflect(velocity_, glm::vec2(sin(angle), cos(angle)));
-        std::cout<<velocity_<<std::endl;
+        if (new_velocity.y >= 0) {
+          new_velocity.y = -new_velocity.y;
+        }
+        velocity_ = new_velocity;
       }
     }
   }
@@ -69,30 +66,29 @@ void Ball::BrickCollision(std::vector<brickbreaker::Brick>& bricks) {
   for (brickbreaker::Brick& brick : bricks) {
     glm::vec2 lower_bound = brick.BrickBoundaries().first;
     glm::vec2 upper_bound = brick.BrickBoundaries().second;
-    // TODO: Add Corner Collision Detection.
-    if (position_.x >= lower_bound.x - kBallRadius &&
-        position_.x <= upper_bound.x + kBallRadius &&
-        position_.y >= lower_bound.y - kBallRadius &&
-        position_.y <= upper_bound.y + kBallRadius) {
+    if (position_.x >= lower_bound.x - radius_ &&
+        position_.x <= upper_bound.x + radius_ &&
+        position_.y >= lower_bound.y - radius_ &&
+        position_.y <= upper_bound.y + radius_) {
       if (position_.y <= brick.position().y - (brick.height())) {
-        std::cout << "top" << std::endl;
+        //top
         if (!(velocity_.y < 0)) {
           velocity_ = glm::vec2(velocity_.x, -velocity_.y);
         }
       } else if (position_.y >= brick.position().y + (brick.height())) {
-        std::cout << "bottom" << std::endl;
+        //bottom
         if (!(velocity_.y > 0)) {
           velocity_ = glm::vec2(velocity_.x, -velocity_.y);
         }
       } else if (position_.x <= brick.position().x) {
-        std::cout << "left" << std::endl;
+        //left
         if (!(velocity_.x < 0)) {
           velocity_ = glm::vec2(-velocity_.x, velocity_.y);
         }
       } else if (position_.x >= brick.position().x) {
-        std::cout << "right" << std::endl;
+        //right
         if (!(velocity_.x > 0)) {
-          velocity_ = glm::vec2(-velocity_.x, -velocity_.y);
+          velocity_ = glm::vec2(-velocity_.x, velocity_.y);
         }
       }
       brick.Update();
@@ -100,7 +96,16 @@ void Ball::BrickCollision(std::vector<brickbreaker::Brick>& bricks) {
   }
 }
 
-glm::vec2 Ball::position() const {
+void Ball::Reset() {
+  is_launched_ = false;
+
+  std::srand(std::time(nullptr));
+  float x_velocity = rand() % 4 - 2;
+  float y_velocity = -(rand() % 3 + 1);
+  velocity_ = glm::vec2(x_velocity, y_velocity);
+}
+
+glm::vec2& Ball::position() {
   return position_;
 }
 
@@ -108,7 +113,29 @@ float Ball::radius() const {
   return radius_;
 }
 
-glm::vec2 Ball::velocity() const {
+glm::vec2& Ball::velocity() {
   return velocity_;
+}
+
+bool Ball::is_launched() const {
+  return is_launched_;
+}
+
+void Ball::set_position(float x, float y) {
+  position_.x = x;
+  position_.y = y;
+}
+
+void Ball::set_radius(float radius) {
+  radius_ = radius;
+}
+
+void Ball::set_velocity(float x, float y) {
+  velocity_.x = x;
+  velocity_.y = y;
+}
+
+void Ball::set_is_launched(bool is_launched) {
+  is_launched_ = is_launched;
 }
 }
